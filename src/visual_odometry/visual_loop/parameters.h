@@ -69,6 +69,9 @@
 #include "../visual_feature/camera_models/CataCamera.h"
 #include "../visual_feature/camera_models/PinholeCamera.h"
 
+#include "../visual_estimator/utility/tic_toc.h"
+#include "../visual_estimator/utility/utility.h"
+
 using namespace std;
 
 extern camodocal::CameraPtr m_camera;
@@ -78,6 +81,8 @@ extern Eigen::Matrix3d qic;
 
 extern string PROJECT_NAME;
 extern string IMAGE_TOPIC;
+extern string POSE_GRAPH_SAVE_PATH;
+extern string VINS_RESULT_PATH;
 
 extern int DEBUG_IMAGE;
 extern int LOOP_CLOSURE;

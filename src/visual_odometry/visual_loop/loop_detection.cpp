@@ -190,3 +190,81 @@ void LoopDetector::visualizeKeyPoses(double time_cur)
     markerArray.markers.push_back(markerNode);
     pub_key_pose.publish(markerArray);
 }
+
+void LoopDetector::savePoseGraph()
+{
+    m_keyframelist.lock();
+    TicToc tmp_t;
+    FILE *pFile;
+    printf("pose graph path: %s\n",POSE_GRAPH_SAVE_PATH.c_str());
+    printf("pose graph saving... \n");
+    string file_path = POSE_GRAPH_SAVE_PATH + "pose_graph.txt";
+    pFile = fopen (file_path.c_str(),"w");
+    //fprintf(pFile, "index time_stamp Tx Ty Tz Qw Qx Qy Qz loop_index loop_info\n");
+    list<KeyFrame*>::iterator it;
+    for (it = keyframelist.begin(); it != keyframelist.end(); it++)
+    {
+        std::string image_path, descriptor_path, brief_path, keypoints_path;
+        std::string window_brief_path, window_keypoints_path;   // yabao
+        if (DEBUG_IMAGE)
+        {
+            image_path = POSE_GRAPH_SAVE_PATH + to_string((*it)->index) + "_image.png";
+            imwrite(image_path.c_str(), (*it)->image);
+        }
+        Quaterniond VIO_tmp_Q{(*it)->origin_vio_R};
+        Quaterniond PG_tmp_Q{(*it)->origin_vio_R};
+        Vector3d VIO_tmp_T = (*it)->origin_vio_T;
+        Vector3d PG_tmp_T = (*it)->origin_vio_T;
+
+        fprintf (pFile, " %d %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %d %f %f %f %f %f %f %f %f %d %d\n",(*it)->index, (*it)->time_stamp, 
+                                    VIO_tmp_T.x(), VIO_tmp_T.y(), VIO_tmp_T.z(), 
+                                    PG_tmp_T.x(), PG_tmp_T.y(), PG_tmp_T.z(), 
+                                    VIO_tmp_Q.w(), VIO_tmp_Q.x(), VIO_tmp_Q.y(), VIO_tmp_Q.z(), 
+                                    PG_tmp_Q.w(), PG_tmp_Q.x(), PG_tmp_Q.y(), PG_tmp_Q.z(), 
+                                    (*it)->loop_index, 
+                                    (*it)->loop_info(0), (*it)->loop_info(1), (*it)->loop_info(2), (*it)->loop_info(3),
+                                    (*it)->loop_info(4), (*it)->loop_info(5), (*it)->loop_info(6), (*it)->loop_info(7),
+                                    (int)(*it)->keypoints.size(), (int)(*it)->window_keypoints.size());
+
+        // write keypoints, brief_descriptors   vector<cv::KeyPoint> keypoints vector<BRIEF::bitset> brief_descriptors;
+        assert((*it)->keypoints.size() == (*it)->brief_descriptors.size());
+        brief_path = POSE_GRAPH_SAVE_PATH + to_string((*it)->index) + "_briefdes.dat";
+        std::ofstream brief_file(brief_path, std::ios::binary);
+        keypoints_path = POSE_GRAPH_SAVE_PATH + to_string((*it)->index) + "_keypoints.txt";
+        FILE *keypoints_file;
+        keypoints_file = fopen(keypoints_path.c_str(), "w");
+        for (int i = 0; i < (int)(*it)->keypoints.size(); i++)
+        {
+            brief_file << (*it)->brief_descriptors[i] << endl;
+            fprintf(keypoints_file, "%f %f %f %f\n", (*it)->keypoints[i].pt.x, (*it)->keypoints[i].pt.y, 
+                                                     (*it)->keypoints_norm[i].pt.x, (*it)->keypoints_norm[i].pt.y);
+        }
+        brief_file.close();
+        fclose(keypoints_file);
+
+        // 保存光流追踪的点 yabao
+        assert((*it)->window_keypoints.size() == (*it)->window_brief_descriptors.size());
+        window_brief_path = POSE_GRAPH_SAVE_PATH + to_string((*it)->index) + "_window_briefdes.dat";
+        std::ofstream window_brief_file(window_brief_path, std::ios::binary);
+        window_keypoints_path = POSE_GRAPH_SAVE_PATH + to_string((*it)->index) + "_window_keypoints.txt";
+        FILE *window_keypoints_file;
+        window_keypoints_file = fopen(window_keypoints_path.c_str(), "w");
+        for (int i = 0; i < (int)(*it)->window_keypoints.size(); i++)
+        {
+            window_brief_file << (*it)->window_brief_descriptors[i] << endl;
+            fprintf(window_keypoints_file, "%f %f %f %f %f %f %f %f\n", 
+                    (*it)->point_3d[i].x, (*it)->point_3d[i].y, (*it)->point_3d[i].z, 
+                    (*it)->point_2d_uv[i].x, (*it)->point_2d_uv[i].y,
+                    (*it)->point_2d_norm[i].x, (*it)->point_2d_norm[i].y,
+                    (*it)->point_id[i]);
+                    
+        }
+        window_brief_file.close();
+        fclose(window_keypoints_file);
+        // 保存光流追踪的点 yabao
+    }
+    fclose(pFile);
+
+    printf("save pose graph time: %f s\n", tmp_t.toc() / 1000);
+    m_keyframelist.unlock();
+}

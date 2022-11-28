@@ -16,6 +16,7 @@ public:
 	map<int, cv::Mat> image_pool;
 
 	list<KeyFrame*> keyframelist;
+	std::mutex m_keyframelist;		// yabao
 
 	LoopDetector();
 	void loadVocabulary(std::string voc_path);
@@ -27,4 +28,6 @@ public:
 	void visualizeKeyPoses(double time_cur);
 
 	int detectLoop(KeyFrame* keyframe, int frame_index);
+
+	void savePoseGraph();
 };

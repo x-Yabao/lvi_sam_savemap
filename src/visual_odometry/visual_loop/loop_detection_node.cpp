@@ -37,6 +37,10 @@ ros::Publisher pub_key_pose;
 
 BriefExtractor briefExtractor;
 
+
+std::string POSE_GRAPH_SAVE_PATH;
+std::string VINS_RESULT_PATH;
+
 void new_sequence()
 {
     m_buf.lock();
@@ -247,6 +251,28 @@ void process()
     }
 }
 
+void command()
+{
+    if (!LOOP_CLOSURE)
+        return;
+    while(1)
+    {
+        char c = getchar();
+        if (c == 's')
+        {
+            m_process.lock();
+            loopDetector.savePoseGraph();
+            m_process.unlock();
+            // ros::shutdown();
+        }
+        if (c == 'n')
+            new_sequence();
+
+        std::chrono::milliseconds dura(5);
+        std::this_thread::sleep_for(dura);
+    }
+}
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "vins");
@@ -289,6 +315,14 @@ int main(int argc, char **argv)
         brief_pattern_file = pkg_path + brief_pattern_file;
         briefExtractor = BriefExtractor(brief_pattern_file);
 
+        // initialize output path
+        fsSettings["pose_graph_save_path"] >> POSE_GRAPH_SAVE_PATH;
+        fsSettings["output_path"] >> VINS_RESULT_PATH;
+
+        // create folder if not exists
+        FileSystemHelper::createDirectoryIfNotExists(VINS_RESULT_PATH.c_str());
+        FileSystemHelper::createDirectoryIfNotExists(POSE_GRAPH_SAVE_PATH.c_str());
+
         // initialize camera model
         m_camera = camodocal::CameraFactory::instance()->generateCameraFromYamlFile(config_file.c_str());
     }
@@ -315,7 +349,9 @@ int main(int argc, char **argv)
     }
 
     std::thread measurement_process;
+    std::thread keyboard_command_process;
     measurement_process = std::thread(process);
+    keyboard_command_process = std::thread(command);
 
     ros::spin();
     return 0;

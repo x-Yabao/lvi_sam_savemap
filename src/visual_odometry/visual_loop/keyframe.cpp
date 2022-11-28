@@ -18,6 +18,9 @@ KeyFrame::KeyFrame(double _time_stamp, int _index,
                    vector<cv::Point2f> &_point_2d_uv, vector<cv::Point2f> &_point_2d_norm,
 		           vector<double> &_point_id)
 {
+    loop_index = 0;                         // yabao
+    loop_info << 0, 0, 0, 0, 0, 0, 0, 0;    // yabao
+
 	time_stamp = _time_stamp;
 	index = _index;
 

@@ -34,6 +34,9 @@ public:
 	vector<BRIEF::bitset> brief_descriptors;
 	vector<BRIEF::bitset> window_brief_descriptors;
 
+	int loop_index;								// yabao
+	Eigen::Matrix<double, 8, 1 > loop_info;		// yabao
+
 	KeyFrame(double _time_stamp, int _index, 
 			 Vector3d &_vio_T_w_i, Matrix3d &_vio_R_w_i, 
 			 cv::Mat &_image,
