@@ -197,16 +197,16 @@ public:
 
         // giseop
         // create directory and remove old files;
-        savePCDDirectory = std::getenv("HOME") + savePCDDirectory; 
+        savePCDDirectory = std::getenv("HOME") + savePCDDirectory; // rather use global path
         int unused = system((std::string("exec rm -r ") + savePCDDirectory).c_str());
         unused = system((std::string("mkdir ") + savePCDDirectory).c_str());
 
         saveSCDDirectory = savePCDDirectory + "SCDs/"; // SCD: scan context descriptor
-        unused = system((std::string("exec rm -r ") + saveSCDDirectory).c_str());
+        //unused = system((std::string("exec rm -r ") + saveSCDDirectory).c_str());
         unused = system((std::string("mkdir -p ") + saveSCDDirectory).c_str());
 
         saveNodePCDDirectory = savePCDDirectory + "Scans/";
-        unused = system((std::string("exec rm -r ") + saveNodePCDDirectory).c_str());
+        //unused = system((std::string("exec rm -r ") + saveNodePCDDirectory).c_str());
         unused = system((std::string("mkdir -p ") + saveNodePCDDirectory).c_str());
 
         // pgSaveStream = std::fstream(savePCDDirectory + "singlesession_posegraph.g2o", std::fstream::out);

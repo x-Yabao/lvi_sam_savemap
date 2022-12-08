@@ -7,6 +7,7 @@ project_name: "lvi_sam"
 imu_topic: "/imu_raw"
 image_topic: "/camera/image_raw"
 point_cloud_topic: "lvi_sam/lidar/deskew/cloud_deskewed"
+output_path: "/home/yabao/output/lvi_sam_ori_map/camera"    #yabao
 
 # Lidar Params
 use_lidar: 1                     # whether use depth info from lidar or not
@@ -103,7 +104,8 @@ rolling_shutter_tr: 0    # unit: s. rolling shutter read out time per frame (fro
 loop_closure: 1                    # start loop closure
 skip_time: 0.0
 skip_dist: 0.0
-debug_image: 0                      # save raw image in loop detector for visualization prupose; you can close this function by setting 0 
+debug_image: 1                      # save raw image in loop detector for visualization prupose; you can close this function by setting 0 
 match_image_scale: 0.5
 vocabulary_file: "/config/brief_k10L6.bin"
 brief_pattern_file: "/config/brief_pattern.yml"
+pose_graph_save_path: "/home/yabao/output/lvi_sam_ori_map/camera/pose_graph/" 

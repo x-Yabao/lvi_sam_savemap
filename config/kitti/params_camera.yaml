@@ -33,8 +33,8 @@ imu_to_lidar_rz: -0.0010538
 model_type: PINHOLE
 camera_name: camera
 
-image_width: 1238
-image_height: 374
+image_width: 1226
+image_height: 370
 distortion_parameters:
    k1: 0.0
    k2: 0.0
@@ -100,7 +100,7 @@ rolling_shutter_tr: 0    # unit: s. rolling shutter read out time per frame (fro
 loop_closure: 1                    # start loop closure
 skip_time: 0.0
 skip_dist: 0.0
-debug_image: 0                      # save raw image in loop detector for visualization prupose; you can close this function by setting 0 
+debug_image: 1                    # save raw image in loop detector for visualization prupose; you can close this function by setting 0 
 match_image_scale: 0.5
 vocabulary_file: "/config/brief_k10L6.bin"
 brief_pattern_file: "/config/brief_pattern.yml"
