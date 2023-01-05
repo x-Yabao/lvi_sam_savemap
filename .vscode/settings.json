@@ -4,5 +4,9 @@
     ],
     "python.analysis.extraPaths": [
         "/opt/ros/kinetic/lib/python2.7/dist-packages"
-    ]
+    ],
+    "files.associations": {
+        "cmath": "cpp",
+        "complex": "cpp"
+    }
 }

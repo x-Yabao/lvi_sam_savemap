@@ -4,10 +4,10 @@
 project_name: "lvi_sam" 
 
 #common parameters
-imu_topic: "/imu_raw"
-image_topic: "/kitti/camera_gray_left/image_raw"
+imu_topic: "/handsfree/imu"
+image_topic: "/camera/color/image_raw"
 point_cloud_topic: "lvi_sam/lidar/deskew/cloud_deskewed"
-output_path: "/home/yabao/output/lvi_sam_map/camera"    #yabao
+output_path: "/home/yabao/output/M2DGR/gate_01/camera"    #yabao
 
 # Lidar Params
 use_lidar: 1                     # whether use depth info from lidar or not
@@ -15,45 +15,46 @@ lidar_skip: 3                    # skip this amount of scans
 align_camera_lidar_estimation: 1 # align camera and lidar estimation for visualization
 
 # lidar to camera extrinsic
-lidar_to_cam_tx: -7.275538e-03
-lidar_to_cam_ty: -6.324057e-02
-lidar_to_cam_tz: -2.670414e-01
-lidar_to_cam_rx: 1.0487711
-lidar_to_cam_ry: -1.5561763
-lidar_to_cam_rz: 0.5160444
+lidar_to_cam_tx: 0.27255
+lidar_to_cam_ty: -0.00053
+lidar_to_cam_tz: 0.17954
+lidar_to_cam_rx: 0.0
+lidar_to_cam_ry: 0.0
+lidar_to_cam_rz: 0.0
 
-# imu to lidar extrinsic 
-imu_to_lidar_tx: -8.086759e-01
-imu_to_lidar_ty: 3.195559e-01
-imu_to_lidar_tz: -7.997231e-01
-imu_to_lidar_rx: 0.0197665
-imu_to_lidar_ry: -0.0026965
-imu_to_lidar_rz: -0.0010538
+# imu to lidar extrinsic
+imu_to_lidar_tx: 0.27255
+imu_to_lidar_ty: -0.00053
+imu_to_lidar_tz: 0.17954
+imu_to_lidar_rx: 0
+imu_to_lidar_ry: 0
+imu_to_lidar_rz: 0
+
 # camera model
 model_type: PINHOLE
 camera_name: camera
 
-image_width: 1238
-image_height: 374
+image_width: 640
+image_height: 480
 distortion_parameters:
-   k1: 0.0
-   k2: 0.0
-   p1: 0.0
-   p2: 0.0
+   k1: 0.148000794688248
+   k2: -0.217835187249065
+   p1: 0
+   p2: 0
 projection_parameters:
-   fx: 7.183351e+02
-   fy: 7.183351e+02
-   cx: 6.003891e+02
-   cy: 1.815122e+02
+   fx: 617.971050917033
+   fy: 616.445131524790
+   cx: 327.710279392468
+   cy: 253.976983707814
 
 
 #imu parameters       The more accurate parameters you provide, the worse performance
-acc_n: 0.08         # accelerometer measurement noise standard deviation.
-gyr_n: 0.04         # gyroscope measurement noise standard deviation.
-acc_w: 0.00004        # accelerometer bias random work noise standard deviation.
-gyr_w: 2.0e-6       # gyroscope bias random work noise standard deviation.
-g_norm: 9.81007       # gravity magnitude
-imu_hz: 100         # frequency of imu
+acc_n: 1.2820343288774358e-01         # accelerometer measurement noise standard deviation.
+gyr_n: 2.1309311394972831e-02         # gyroscope measurement noise standard deviation.
+acc_w: 1.3677912958097768e-02        # accelerometer bias random work noise standard deviation.
+gyr_w: 3.6603917782528627e-04       # gyroscope bias random work noise standard deviation.
+g_norm: 9.805       # gravity magnitude
+imu_hz: 150         # frequency of imu
 
 # Extrinsic parameter between IMU and Camera.
 estimate_extrinsic: 0   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
@@ -64,33 +65,33 @@ extrinsicRotation: !!opencv-matrix
    rows: 3
    cols: 3
    dt: d
-   data: [0.0057214, -0.0125348, 0.999905,
-         -0.999982, 0.00170246, 0.00574319,
-         -0.00177429, -0.99992, -0.0125248]
+   data: [ 0.0,  0.0,  1.0,
+           -1.0,  0.0,  0.0, 
+           0.0,  -1.0,  0.0]
 #Translation from camera frame to imu frame, imu^T_cam
 extrinsicTranslation: !!opencv-matrix
    rows: 3
    cols: 1
    dt: d
-   data: [1.08607, -0.327353, 0.720841]
+   data: [0.57711, -0.00012, 0.83333]
 
 #feature traker paprameters
 max_cnt: 150            # max feature number in feature tracking
 min_dist: 20            # min distance between two features 
-freq: 10                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
+freq: 20                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
 F_threshold: 1.0        # ransac threshold (pixel)
 show_track: 1           # publish tracking image as topic
 equalize: 1             # if image is too dark or light, trun on equalize to find enough features
 fisheye: 0              # if using fisheye, trun on it. A circle mask will be loaded to remove edge noisy points
 
 #optimization parameters
-max_solver_time: 0.035   # max solver itration time (ms), to guarantee real time
+max_solver_time: 0.04   # max solver itration time (ms), to guarantee real time
 max_num_iterations: 10   # max solver itrations, to guarantee real time
 keyframe_parallax: 10.0  # keyframe selection threshold (pixel)
 
 #unsynchronization parameters
 estimate_td: 0           # online estimate time offset between camera and imu
-td: 0                  # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
+td: 0                   # initial value of time offset. unit: s. readed image clock + td = real image clock (IMU clock)
 
 #rolling shutter parameters
 rolling_shutter: 0       # 0: global shutter camera, 1: rolling shutter camera
@@ -100,8 +101,7 @@ rolling_shutter_tr: 0    # unit: s. rolling shutter read out time per frame (fro
 loop_closure: 1                    # start loop closure
 skip_time: 0.0
 skip_dist: 0.0
-debug_image: 1                    # save raw image in loop detector for visualization prupose; you can close this function by setting 0 
+debug_image: 0                      # save raw image in loop detector for visualization prupose; you can close this function by setting 0 
 match_image_scale: 0.5
 vocabulary_file: "/config/brief_k10L6.bin"
 brief_pattern_file: "/config/brief_pattern.yml"
-pose_graph_save_path: "/home/yabao/output/lvi_sam_map/camera/pose_graph/" 
