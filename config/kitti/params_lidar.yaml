@@ -8,7 +8,7 @@ lvi_sam:
   imuTopic: "/imu_raw"                         # IMU data
 
   # Heading
-  useImuHeadingInitialization: true          # if using GPS data, set to "true"
+  useImuHeadingInitialization: false          # if using GPS data, set to "true"
   
   # Export settings
   savePCD: true                              # https://github.com/TixiaoShan/LIO-SAM/issues/3
