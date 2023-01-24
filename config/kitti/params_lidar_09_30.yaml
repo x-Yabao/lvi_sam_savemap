@@ -12,14 +12,14 @@ lvi_sam:
   
   # Export settings
   savePCD: true                              # https://github.com/TixiaoShan/LIO-SAM/issues/3
-  savePCDDirectory: "/output/lvi_sam_map/lidar/"        # in your home folder, starts and ends with "/". Warning: the code deletes "LOAM" folder then recreates it. See "mapOptimization" for implementation
+  savePCDDirectory: "/output/KITTI/2011_09_30_drive_0027_07/lidar/"        # in your home folder, starts and ends with "/". Warning: the code deletes "LOAM" folder then recreates it. See "mapOptimization" for implementation
 
   # Sensor Settings
   N_SCAN: 64                                  # number of lidar channel (i.e., 16, 32, 64, 128)
   Horizon_SCAN: 1800                         # lidar horizontal resolution (Velodyne:1800, Ouster:512,1024,2048)
   ang_y: 1.0                                  #ang/N_SCAN在纵向激光头分布的角度/线数
   timeField: "time"                           # point timestamp field, Velodyne - "time", Ouster - "t"
-  downsampleRate: 4                           # default: 1. Downsample your data if too many points. i.e., 16 = 64 / 4, 16 = 16 / 1 
+  downsampleRate: 2                           # default: 1. Downsample your data if too many points. i.e., 16 = 64 / 4, 16 = 16 / 1 
 
   # IMU Settings
   imuAccNoise: 3.9939570888238808e-03
