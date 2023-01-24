@@ -7,9 +7,9 @@ project_name: "lvi_sam"
 imu_topic: "/imu_raw"
 image_topic: "/kitti/camera_gray_left/image_raw"
 point_cloud_topic: "lvi_sam/lidar/deskew/cloud_deskewed"
-#output_path: "/home/yabao/output/KITTI/2011_09_30_drive_0018_05/camera"    #yabao
-output_path: "/home/yabao/output/KITTI/2011_09_30_drive_0027_07/camera"    #yabao
-#output_path: "/home/yabao/output/KITTI/2011_09_30_drive_0033_09/camera"    #yabao
+#output_path: "/home/yabao/output/KITTI/2011_09_30_drive_0018_05/camera"    #yabao,slam failure
+#output_path: "/home/yabao/output/KITTI/2011_09_30_drive_0027_07/camera"    #yabao
+output_path: "/home/yabao/output/KITTI/2011_09_30_drive_0033_09/camera"    #yabao
 
 # Lidar Params
 use_lidar: 1                     # whether use depth info from lidar or not
@@ -108,5 +108,5 @@ match_image_scale: 0.5
 vocabulary_file: "/config/brief_k10L6.bin"
 brief_pattern_file: "/config/brief_pattern.yml"
 #pose_graph_save_path: "/home/yabao/output/KITTI/2011_09_30_drive_0018_05/camera/pose_graph/"
-pose_graph_save_path: "/home/yabao/output/KITTI/2011_09_30_drive_0027_07/camera/pose_graph/" 
-#pose_graph_save_path: "/home/yabao/output/KITTI/2011_09_30_drive_0033_09/camera/pose_graph/"
+#pose_graph_save_path: "/home/yabao/output/KITTI/2011_09_30_drive_0027_07/camera/pose_graph/" 
+pose_graph_save_path: "/home/yabao/output/KITTI/2011_09_30_drive_0033_09/camera/pose_graph/"
