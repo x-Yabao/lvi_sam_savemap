@@ -461,7 +461,7 @@ public:
         cout << "Saving map to pcd files ..." << endl;
         // save key frame transformations
         pcl::io::savePCDFileASCII(savePCDDirectory + "trajectory.pcd", *cloudKeyPoses3D);
-        pcl::io::savePCDFileASCII(savePCDDirectory + "transformations.pcd", *cloudKeyPoses6D);
+        pcl::io::savePCDFileASCII(savePCDDirectory + "transformations.pcd", *cloudKeyPoses6D);  // 含有时间信息
         // extract global point cloud map
         pcl::PointCloud<PointType>::Ptr globalCornerCloud(new pcl::PointCloud<PointType>());
         pcl::PointCloud<PointType>::Ptr globalCornerCloudDS(new pcl::PointCloud<PointType>());
@@ -568,6 +568,7 @@ public:
         int key_cur = -1; // latest lidar keyframe id
         int key_pre = -1; // previous lidar keyframe id
         {
+            // 通过时间找到回环的两帧
             loopFindKey(loopMsg, copy_cloudKeyPoses6D, key_cur, key_pre);
             if (key_cur == -1 || key_pre == -1 || key_cur == key_pre) // || abs(key_cur - key_pre) < 25)
                 return;

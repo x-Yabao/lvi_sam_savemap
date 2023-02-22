@@ -31,7 +31,7 @@ void LoopDetector::addKeyFrame(KeyFrame* cur_kf, bool flag_detect_loop)
             std_msgs::Float64MultiArray match_msg;
             match_msg.data.push_back(cur_kf->time_stamp);
             match_msg.data.push_back(old_kf->time_stamp);
-            pub_match_msg.publish(match_msg);
+            pub_match_msg.publish(match_msg);   //视觉回环提供的是时间上的回环关系
         }
 	}
 

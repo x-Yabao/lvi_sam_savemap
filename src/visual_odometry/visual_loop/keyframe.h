@@ -18,6 +18,7 @@ public:
 	// Pose in vins_world
 	Eigen::Vector3d origin_vio_T;		
 	Eigen::Matrix3d origin_vio_R;
+	// Pose in final world
 
 	cv::Mat image;
 	cv::Mat thumbnail;

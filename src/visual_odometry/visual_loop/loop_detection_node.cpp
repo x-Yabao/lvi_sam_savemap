@@ -117,7 +117,7 @@ void process()
     {
         sensor_msgs::ImageConstPtr image_msg = NULL;
         sensor_msgs::PointCloudConstPtr point_msg = NULL;
-        nav_msgs::Odometry::ConstPtr pose_msg = NULL;
+        nav_msgs::Odometry::ConstPtr pose_msg = NULL;           // 最终视觉路径T和R的来源
 
         // find out the messages with same time stamp
         m_buf.lock();
