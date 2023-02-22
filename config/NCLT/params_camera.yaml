@@ -4,10 +4,10 @@
 project_name: "lvi_sam" 
 
 #common parameters
-imu_topic: "/handsfree/imu"                              #注意用的哪个IMU
-image_topic: "/camera/color/image_raw"
+imu_topic: "/imu/data"                              #注意用的哪个IMU
+image_topic: "/images/raw5"
 point_cloud_topic: "lvi_sam/lidar/deskew/cloud_deskewed"
-output_path: "/home/yabao/output/M2DGR/street_02/camera"    #yabao
+output_path: "/home/yabao/output/NCLT/2012-02-04/camera"    #yabao
 
 # Lidar Params
 use_lidar: 1                     # whether use depth info from lidar or not
@@ -15,44 +15,44 @@ lidar_skip: 3                    # skip this amount of scans
 align_camera_lidar_estimation: 1 # align camera and lidar estimation for visualization
 
 # lidar to camera extrinsic
-lidar_to_cam_tx: 0.00065
-lidar_to_cam_ty: 0.65376
-lidar_to_cam_tz: -0.30456
-lidar_to_cam_rx: 0.0
-lidar_to_cam_ry: -1.5707963
-lidar_to_cam_rz: 1.5707963
+lidar_to_cam_tx: 0.273033
+lidar_to_cam_ty: 0.00682854
+lidar_to_cam_tz: -0.0734614
+lidar_to_cam_rx: 1.5795181
+lidar_to_cam_ry: 0.0253506
+lidar_to_cam_rz: 1.5718613
 
 # imu to lidar extrinsic
-imu_to_lidar_tx: -0.27255
-imu_to_lidar_ty: 0.00053
-imu_to_lidar_tz: -0.17954
-imu_to_lidar_rx: 0
-imu_to_lidar_ry: 0
-imu_to_lidar_rz: 0
+imu_to_lidar_tx: 0.176645
+imu_to_lidar_ty: -0.106335
+imu_to_lidar_tz: 0.249035
+imu_to_lidar_rx: -0.0027242
+imu_to_lidar_ry: 0.0141193
+imu_to_lidar_rz: 1.5830672
 
 # camera model
 model_type: PINHOLE
 camera_name: camera
 
-image_width: 640
-image_height: 480
+image_width: 1232
+image_height: 1616
 distortion_parameters:
-   k1: 0.148000794688248
-   k2: -0.217835187249065
-   p1: 0
-   p2: 0
+  k1: 0.0
+  k2: 0.0
+  p1: 0.0
+  p2: 0.0
 projection_parameters:
-   fx: 617.971050917033
-   fy: 616.445131524790
-   cx: 327.710279392468
-   cy: 253.976983707814
+  fx: 399.433184
+  fy: 399.433184
+  cx: 826.361952
+  cy: 621.668624
 
 
 #imu parameters       The more accurate parameters you provide, the worse performance
-acc_n: 3.7686306102624571e-02         # accelerometer measurement noise standard deviation.
-gyr_n: 2.3417543020438883e-03         # gyroscope measurement noise standard deviation.
-acc_w: 1.1416642385952368e-03        # accelerometer bias random work noise standard deviation.
-gyr_w: 1.4428407712885209e-05       # gyroscope bias random work noise standard deviation.
+acc_n: 0.1         # accelerometer measurement noise standard deviation.
+gyr_n: 0.01         # gyroscope measurement noise standard deviation.
+acc_w: 0.001        # accelerometer bias random work noise standard deviation.
+gyr_w: 0.0001       # gyroscope bias random work noise standard deviation.
 g_norm: 9.805       # gravity magnitude
 imu_hz: 150         # frequency of imu
 
@@ -65,15 +65,15 @@ extrinsicRotation: !!opencv-matrix
    rows: 3
    cols: 3
    dt: d
-   data: [ 0.0,  0.0,  1.0,
-           -1.0,  0.0,  0.0, 
-           0.0,  -1.0,  0.0]
+   data: [-0.00541245, 0.0130744, 0.9999,  
+         -0.00176622, -0.999913, 0.0130651, 
+          0.999984, -0.00169533, 0.00543507]
 #Translation from camera frame to imu frame, imu^T_cam
 extrinsicTranslation: !!opencv-matrix
    rows: 3
    cols: 1
    dt: d
-   data: [0.57711, -0.00012, 0.83333]
+   data: [0.186843, 0.18427, -0.519618]
 
 #feature traker paprameters
 max_cnt: 150            # max feature number in feature tracking
@@ -101,8 +101,8 @@ rolling_shutter_tr: 0    # unit: s. rolling shutter read out time per frame (fro
 loop_closure: 1                    # start loop closure
 skip_time: 0.0
 skip_dist: 0.0
-debug_image: 1                      # save raw image in loop detector for visualization prupose; you can close this function by setting 0 
+debug_image: 0                      # save raw image in loop detector for visualization prupose; you can close this function by setting 0 
 match_image_scale: 0.5
 vocabulary_file: "/config/brief_k10L6.bin"
 brief_pattern_file: "/config/brief_pattern.yml"
-pose_graph_save_path: "/home/yabao/output/M2DGR/street_02/camera/pose_graph/" 
+pose_graph_save_path: "/home/yabao/output/NCLT/2012-02-04/camera/pose_graph/" 

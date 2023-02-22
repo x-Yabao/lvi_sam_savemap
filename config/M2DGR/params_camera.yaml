@@ -1,5 +1,6 @@
 %YAML:1.0
 
+#只需要修改output相关路径
 # Project
 project_name: "lvi_sam" 
 
@@ -7,7 +8,7 @@ project_name: "lvi_sam"
 imu_topic: "/handsfree/imu"                              #注意用的哪个IMU
 image_topic: "/camera/color/image_raw"
 point_cloud_topic: "lvi_sam/lidar/deskew/cloud_deskewed"
-output_path: "/home/yabao/output/M2DGR/street_02/camera"    #yabao
+output_path: "/home/yabao/output/M2DGR/gate_03/camera"    #yabao
 
 # Lidar Params
 use_lidar: 1                     # whether use depth info from lidar or not
@@ -105,4 +106,4 @@ debug_image: 1                      # save raw image in loop detector for visual
 match_image_scale: 0.5
 vocabulary_file: "/config/brief_k10L6.bin"
 brief_pattern_file: "/config/brief_pattern.yml"
-pose_graph_save_path: "/home/yabao/output/M2DGR/street_02/camera/pose_graph/" 
+pose_graph_save_path: "/home/yabao/output/M2DGR/gate_03/camera/pose_graph/" 

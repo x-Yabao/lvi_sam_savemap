@@ -5,14 +5,14 @@ lvi_sam:
 
   # Topics
   pointCloudTopic: "velodyne_points"               # Point cloud data
-  imuTopic: "handsfree/imu"                         # IMU data
+  imuTopic: "imu/data"                         # IMU data
 
   # Heading
   useImuHeadingInitialization: false         # if using GPS data, set to "true"
   
   # Export settings
-  savePCD: true                              # https://github.com/TixiaoShan/LIO-SAM/issues/3
-  savePCDDirectory: "/output/M2DGR/street_02/lidar/"         # in your home folder, starts and ends with "/". Warning: the code deletes "LOAM" folder then recreates it. See "mapOptimization" for implementation
+  savePCD: false                              # https://github.com/TixiaoShan/LIO-SAM/issues/3
+  savePCDDirectory: "/output/NCLT/2012-02-04/lidar/"         # in your home folder, starts and ends with "/". Warning: the code deletes "LOAM" folder then recreates it. See "mapOptimization" for implementation
 
   # Sensor Settings
   N_SCAN: 32                                  # number of lidar channel (i.e., 16, 32, 64, 128)
@@ -27,12 +27,12 @@ lvi_sam:
   imuAccBiasN: 1.1416642385952368e-03
   imuGyrBiasN: 1.4428407712885209e-05
   imuGravity: 9.805
-  imuHz: 150 
+  imuHz: 100 
   
   # Extrinsics (IMU -> lidar)
-  extrinsicTrans: [-0.27255, 0.00053,-0.17954]
-  extrinsicRot: [1, 0, 0, 0, 1, 0, 0, 0, 1]
-  extrinsicRPY: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+  extrinsicTrans: [0.176645, -0.106335, 0.249035]
+  extrinsicRot: [-0.0122693, -0.999921, -0.00289724, 0.999825, -0.0123089, 0.0140843, -0.0141188, -0.00272393, 0.999897]
+  extrinsicRPY: [-0.0122693, -0.999921, -0.00289724, 0.999825, -0.0123089, 0.0140843, -0.0141188, -0.00272393, 0.999897]
 
   # LOAM feature threshold
   edgeThreshold: 1.0
