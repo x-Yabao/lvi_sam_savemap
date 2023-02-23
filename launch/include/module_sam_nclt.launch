@@ -2,9 +2,9 @@
 
     <arg name="project" default="lvi_sam"/>
     <!-- Lidar odometry param -->
-    <rosparam file="$(find lvi_sam)/config/NCLT/params_lidar.yaml" command="load" />
+    <rosparam file="$(find lvi_sam)/config/nclt/params_lidar.yaml" command="load" />
     <!-- VINS config -->
-    <param name="vins_config_file" type="string" value="$(find lvi_sam)/config/NCLT/params_camera.yaml" />
+    <param name="vins_config_file" type="string" value="$(find lvi_sam)/config/nclt/params_camera.yaml" />
 
     <!-- Lidar odometry -->
     <node pkg="$(arg project)"      type="$(arg project)_imuPreintegration"   name="$(arg project)_imuPreintegration"    output="screen"     respawn="true"/>

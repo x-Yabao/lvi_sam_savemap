@@ -7,7 +7,7 @@
     <include file="$(find lvi_sam)/launch/include/module_rviz.launch" />
 
     <!--- SAM -->
-    <include file="$(find lvi_sam)/launch/include/module_sam_M2DGR.launch" />
+    <include file="$(find lvi_sam)/launch/include/module_sam_nclt.launch" />
 
 </launch>
 
