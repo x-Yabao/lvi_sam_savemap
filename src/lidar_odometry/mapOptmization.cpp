@@ -18,10 +18,10 @@
 
 using namespace gtsam;
 
-using symbol_shorthand::B; // Bias  (ax,ay,az,gx,gy,gz)
-using symbol_shorthand::G; // GPS pose
-using symbol_shorthand::V; // Vel   (xdot
-using symbol_shorthand::X; // Pose3 (x,y,z,r,p,y)
+using symbol_shorthand::B;      // Bias  (ax,ay,az,gx,gy,gz)
+using symbol_shorthand::G;      // GPS pose
+using symbol_shorthand::V;      // Vel   (xdot
+using symbol_shorthand::X;      // Pose3 (x,y,z,r,p,y)
 ros::Duration duration;
 ros::Time pre_lidar_time;
 bool first_lidar_keypose = false;
@@ -88,8 +88,8 @@ public:
     pcl::PointCloud<PointType>::Ptr cloudKeyPoses3D;
     pcl::PointCloud<PointTypePose>::Ptr cloudKeyPoses6D;
 
-    pcl::PointCloud<PointType>::Ptr laserCloudRaw;   // giseop
-    pcl::PointCloud<PointType>::Ptr laserCloudRawDS; // giseop
+    pcl::PointCloud<PointType>::Ptr laserCloudRaw;          // giseop
+    pcl::PointCloud<PointType>::Ptr laserCloudRawDS;        // giseop
     double laserCloudRawTime;
 
     pcl::PointCloud<PointType>::Ptr laserCloudCornerLast;   // corner feature set from odoOptimization
@@ -100,10 +100,10 @@ public:
     pcl::PointCloud<PointType>::Ptr laserCloudOri;
     pcl::PointCloud<PointType>::Ptr coeffSel;
 
-    std::vector<PointType> laserCloudOriCornerVec; // corner point holder for parallel computation
+    std::vector<PointType> laserCloudOriCornerVec;          // corner point holder for parallel computation
     std::vector<PointType> coeffSelCornerVec;
     std::vector<bool> laserCloudOriCornerFlag;
-    std::vector<PointType> laserCloudOriSurfVec; // surf point holder for parallel computation
+    std::vector<PointType> laserCloudOriSurfVec;            // surf point holder for parallel computation
     std::vector<PointType> coeffSelSurfVec;
     std::vector<bool> laserCloudOriSurfFlag;
 
@@ -146,14 +146,14 @@ public:
 
     Eigen::Affine3f transPointAssociateToMap;
 
-    map<int, int> loopIndexContainer; // from new to old
+    map<int, int> loopIndexContainer;               // from new to old
     vector<pair<int, int>> loopIndexQueue;
     vector<gtsam::Pose3> loopPoseQueue;
     vector<gtsam::noiseModel::Diagonal::shared_ptr> loopNoiseQueue;
 
     // data saver
-    // std::fstream pgSaveStream;     // pg: pose-graph
-    // std::fstream pgTimeSaveStream; // pg: pose-graph
+    // std::fstream pgSaveStream;                   // pg: pose-graph
+    // std::fstream pgTimeSaveStream;               // pg: pose-graph
     // std::vector<std::string> edges_str;
     // std::vector<std::string> vertices_str;
     // std::fstream pgVertexSaveStream;
@@ -161,6 +161,8 @@ public:
 
     std::string saveSCDDirectory;
     std::string saveNodePCDDirectory;
+    std::string saveCornerPCDDirectory;
+    std::string saveSurfPCDDirectory;
 
     mapOptimization()
     {
@@ -193,21 +195,25 @@ public:
         downSizeFilterICP.setLeafSize(mappingSurfLeafSize, mappingSurfLeafSize, mappingSurfLeafSize);
         downSizeFilterSurroundingKeyPoses.setLeafSize(surroundingKeyframeDensity, surroundingKeyframeDensity, surroundingKeyframeDensity); // for surrounding key poses of scan-to-map optimization
 
-        allocateMemory(); //只在最开始调用
+        allocateMemory();                   //只在最开始调用
 
         // giseop
         // create directory and remove old files;
-        savePCDDirectory = std::getenv("HOME") + savePCDDirectory; // rather use global path
+        savePCDDirectory = std::getenv("HOME") + savePCDDirectory;        // rather use global path
         int unused = system((std::string("exec rm -r ") + savePCDDirectory).c_str());
         unused = system((std::string("mkdir ") + savePCDDirectory).c_str());
 
-        saveSCDDirectory = savePCDDirectory + "SCDs/"; // SCD: scan context descriptor
-        //unused = system((std::string("exec rm -r ") + saveSCDDirectory).c_str());
+        saveSCDDirectory = savePCDDirectory + "SCDs/";              
         unused = system((std::string("mkdir -p ") + saveSCDDirectory).c_str());
 
         saveNodePCDDirectory = savePCDDirectory + "Scans/";
-        //unused = system((std::string("exec rm -r ") + saveNodePCDDirectory).c_str());
         unused = system((std::string("mkdir -p ") + saveNodePCDDirectory).c_str());
+
+        saveCornerPCDDirectory = savePCDDirectory + "Corners/";
+        unused = system((std::string("mkdir -p ") + saveCornerPCDDirectory).c_str());
+
+        saveSurfPCDDirectory = savePCDDirectory + "Surfs/";
+        unused = system((std::string("mkdir -p ") + saveSurfPCDDirectory).c_str());
 
         // pgSaveStream = std::fstream(savePCDDirectory + "singlesession_posegraph.g2o", std::fstream::out);
         // pgTimeSaveStream = std::fstream(savePCDDirectory + "times.txt", std::fstream::out);
@@ -460,8 +466,8 @@ public:
         cout << "****************************************************" << endl;
         cout << "Saving map to pcd files ..." << endl;
         // save key frame transformations
-        pcl::io::savePCDFileBinary(savePCDDirectory + "trajectory.pcd", *cloudKeyPoses3D);
         // 不能用savePCDFileASCII（），因为精度只有8位，时间信息只有8位有效数字不够
+        pcl::io::savePCDFileBinary(savePCDDirectory + "trajectory.pcd", *cloudKeyPoses3D);
         pcl::io::savePCDFileBinary(savePCDDirectory + "transformations.pcd", *cloudKeyPoses6D);  
         // extract global point cloud map
         pcl::PointCloud<PointType>::Ptr globalCornerCloud(new pcl::PointCloud<PointType>());
@@ -1640,15 +1646,15 @@ public:
         cornerCloudKeyFrames.push_back(thisCornerKeyFrame);
         surfCloudKeyFrames.push_back(thisSurfKeyFrame);
 
-        /***************** save map - save keyframe information ****************/
+        /***************** save map ****************/
 
-        // save sc data
-        //const auto &curr_scd = scManager.getConstRefRecentSCD();
-        std::string curr_scd_node_idx = padZeros(cornerCloudKeyFrames.size() - 1);
+        std::string curr_node_idx = padZeros(cornerCloudKeyFrames.size() - 1);
 
-        //saveSCD(saveSCDDirectory + curr_scd_node_idx + ".scd", curr_scd);
+        // 1.save sc data
+        // const auto &curr_scd = scManager.getConstRefRecentSCD();
+        // saveSCD(saveSCDDirectory + curr_node_idx + ".scd", curr_scd);
 
-        // save keyframe cloud as file giseop
+        // 2.save keyframe cloud
         bool saveRawCloud{true};
         pcl::PointCloud<PointType>::Ptr thisKeyFrameCloud(new pcl::PointCloud<PointType>());
         if (saveRawCloud)
@@ -1660,10 +1666,15 @@ public:
             *thisKeyFrameCloud += *thisCornerKeyFrame;
             *thisKeyFrameCloud += *thisSurfKeyFrame;
         }
-        pcl::io::savePCDFileBinary(saveNodePCDDirectory + curr_scd_node_idx + ".pcd", *thisKeyFrameCloud);
+        pcl::io::savePCDFileBinary(saveNodePCDDirectory + curr_node_idx + ".pcd", *thisKeyFrameCloud);
+
+        // 3.save corner and surf cloud
+        pcl::io::savePCDFileBinary(saveCornerPCDDirectory + curr_node_idx + ".pcd", *thisCornerKeyFrame);
+        pcl::io::savePCDFileBinary(saveSurfPCDDirectory + curr_node_idx + ".pcd", *thisSurfKeyFrame);
+
         //pgTimeSaveStream << laserCloudRawTime << std::endl;
 
-        /***************** save map - save keyframe information ****************/
+        /***************** save map  ****************/
 
         // save path for visualization
         updatePath(thisPose6D);
