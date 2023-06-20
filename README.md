@@ -26,24 +26,25 @@ catkin_make
 
 ---
 
-## Run the package
-
-1. Configure parameters:
-
-```
-Configure sensor parameters in the .yaml files in the ```config``` folder.
-```
-
-2. Run the launch file:
-```
-roslaunch lvi_sam run.launch
-```
-
-3. Play existing bag files:
-```
-rosbag play handheld.bag 
-```
-
+## Run the package on different datasets
+1. [M2DGR dataset](https://github.com/SJTU-ViSYS/M2DGR)
+   - Run the launch file:
+     ```
+     roslaunch lvi_sam run_m2dgr.launch
+     ```
+   - Play existing bag files, e.g. gate_01.bag:
+     ```
+     rosbag play gate_01.bag 
+     ```
+2. [KITTI dataset](https://github.com/SJTU-ViSYS/M2DGR)
+   - Run the launch file:
+     ```
+     roslaunch lvi_sam run_kitti_09_30.launch
+     ```
+   - Play existing bag files, e.g. gate_01.bag:
+     ```
+     rosbag play gate_01.bag 
+     ```
 
 ---
 
