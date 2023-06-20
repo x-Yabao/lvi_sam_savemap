@@ -1,9 +1,9 @@
 # LVI-SAM
 
 This repository contains code that use LVI-SAM to build the map and save the map. The map include visual information and Lidar information. The map structure is:
-- **main folder**
+- **your folder**
   - **camera**
-    - **pose_graph**
+    - **pose_graph**      (similar to vins-mono's pose graph)
   - **lidar**
     - **Corners**
     - **Surfs**
@@ -14,9 +14,6 @@ This repository contains code that use LVI-SAM to build the map and save the map
     - cloudSurfs.pcd
     - trajectory.pcd
     - transformations.pcd
-
-
-
 
 ---
 
@@ -39,6 +36,8 @@ catkin_make
 
 ## Run the package on different datasets
 1. [M2DGR dataset](https://github.com/SJTU-ViSYS/M2DGR)
+- Change the config files.
+
 - Run the launch file:
 ```
 roslaunch lvi_sam run_m2dgr.launch
@@ -50,6 +49,8 @@ rosbag play gate_01.bag
 - After playing the rosbag, input **s** and **Enter** in the terminal to save the Visual Map, then press **Ctrl + C** to save the Lidar Map.
     
 2. [KITTI raw dataset](https://www.cvlibs.net/datasets/kitti/raw_data.php)
+- Change the config files.
+
 - Run the launch file:
  ```
  roslaunch lvi_sam run_kitti_xx_xx.launch
