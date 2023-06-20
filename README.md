@@ -1,6 +1,19 @@
 # LVI-SAM
 
-This repository contains code that use LVI-SAM to build the map and save the map.
+This repository contains code that use LVI-SAM to build the map and save the map. The map include visual information and Lidar information. The map structure is:
+- **main folder**
+  - **camera**
+    - **pose_graph**
+  - **lidar**
+    - **Corners**
+    - **Surfs**
+    - **Scans**
+    - **SCDs**
+    - cloudGlobal.pcd
+    - cloudCorner.pcd
+    - cloudSurfs.pcd
+    - trajectory.pcd
+    - transformations.pcd
 
 
 
@@ -13,13 +26,11 @@ The dependency of this repo is same as the official [LVI-SAM](https://github.com
 ---
 
 ## Compile
-
 You can use the following commands to download and compile the package.
-
-```shell
+```
 mkdir -p ~/catkin_ws/src
 cd ~/catkin_ws/src
-git clone https://github.com/Cc19245/LVI-SAM-Easyused
+git clone https://github.com/x-Yabao/lvi_sam_savemap
 cd ..
 catkin_make
 ```
@@ -28,23 +39,26 @@ catkin_make
 
 ## Run the package on different datasets
 1. [M2DGR dataset](https://github.com/SJTU-ViSYS/M2DGR)
-   - Run the launch file:
-     ```
-     roslaunch lvi_sam run_m2dgr.launch
-     ```
-   - Play existing bag files, e.g. gate_01.bag:
-     ```
-     rosbag play gate_01.bag 
-     ```
-2. [KITTI dataset](https://github.com/SJTU-ViSYS/M2DGR)
-   - Run the launch file:
-     ```
-     roslaunch lvi_sam run_kitti_09_30.launch
-     ```
-   - Play existing bag files, e.g. gate_01.bag:
-     ```
-     rosbag play gate_01.bag 
-     ```
+- Run the launch file:
+```
+roslaunch lvi_sam run_m2dgr.launch
+```
+- Play existing bag files, e.g. gate_01.bag:
+```
+rosbag play gate_01.bag 
+```
+- After playing the rosbag, input **s** and **Enter** in the terminal to save the Visual Map, then press **Ctrl + C** to save the Lidar Map.
+    
+2. [KITTI raw dataset](https://www.cvlibs.net/datasets/kitti/raw_data.php)
+- Run the launch file:
+ ```
+ roslaunch lvi_sam run_kitti_xx_xx.launch
+ ```
+- Play existing bag files. Please note that you must use **KITTI raw dataset** rather than KITTI Odometry dataset, because the latter's IMU frequency is too low. If you want to use KITTI raw dataset for LVI-SAM, you need to get rosbag files firstly. You can get it refer to [LIO-SAM/config/doc/kitti2bag](https://github.com/TixiaoShan/LIO-SAM/tree/master/config/doc/kitti2bag). 
+```
+rosbag play kitti_xxx.bag  
+```
+- After playing the rosbag, input **s** and **Enter** in the terminal to save the Visual Map, then press **Ctrl + C** to save the Lidar Map.
 
 ---
 
