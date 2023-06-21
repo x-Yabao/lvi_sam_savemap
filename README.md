@@ -1,13 +1,13 @@
-# LVI-SAM
+# LVI-SAM-SAVEMAP
 
-This repository contains code that use LVI-SAM to build the map and save the map. The map include visual information and Lidar information. The map structure is:
+This repository contains code that use LVI-SAM to build map and save the map. The map include visual information and LiDAR information. The map structure is:
 - **your folder**
-  - **camera**
-    - **pose_graph**      (similar to vins-mono's pose graph)
-  - **lidar**
-    - **Corners**
-    - **Surfs**
-    - **Scans**
+  - **camera** (Visual Map)
+    - **pose_graph** (similar to vins-mono's pose graph)
+  - **lidar** (LiDAR Map)
+    - **Corners** (corner point cloud pcd)
+    - **Surfs** (surface point cloud pcd)
+    - **Scans** (deskewed point cloud pcd)
     - **SCDs**
     - cloudGlobal.pcd
     - cloudCorner.pcd
@@ -20,8 +20,6 @@ This repository contains code that use LVI-SAM to build the map and save the map
 ## Dependency
 The dependency of this repo is same as the official [LVI-SAM](https://github.com/TixiaoShan/LVI-SAM). So if you occur a compile problem, we recommend you to compile the official LVI-SAM firstly. Right now we have only tested on Ubuntu 18.04 + ROS melodic environment.
 
----
-
 ## Compile
 You can use the following commands to download and compile the package.
 ```
@@ -32,11 +30,9 @@ cd ..
 catkin_make
 ```
 
----
-
 ## Run the package on different datasets
 1. [M2DGR dataset](https://github.com/SJTU-ViSYS/M2DGR)
-- Change the config files.
+- Change the config files, make sure all the paths are right.
 
 - Run the launch file:
 ```
@@ -46,10 +42,11 @@ roslaunch lvi_sam run_m2dgr.launch
 ```
 rosbag play gate_01.bag 
 ```
-- After playing the rosbag, input **s** and **Enter** in the terminal to save the Visual Map, then press **Ctrl + C** to save the Lidar Map.
+- After playing the rosbag, input **s** and **Enter** in the terminal to save the Visual Map, then press **Ctrl + C** to save the LiDAR Map.
     
+
 2. [KITTI raw dataset](https://www.cvlibs.net/datasets/kitti/raw_data.php)
-- Change the config files.
+- Change the config files, make sure all the paths are right.
 
 - Run the launch file:
  ```
@@ -61,8 +58,7 @@ rosbag play kitti_xxx.bag
 ```
 - After playing the rosbag, input **s** and **Enter** in the terminal to save the Visual Map, then press **Ctrl + C** to save the Lidar Map.
 
----
 
 ## Acknowledgement
-  - [LVI-SAM](https://github.com/TixiaoShan/LVI-SAM)
-  - [LVI-SAM-Easyused](https://github.com/Cc19245/LVI-SAM-Easyused)
+- [LVI-SAM](https://github.com/TixiaoShan/LVI-SAM)
+- [LVI-SAM-Easyused](https://github.com/Cc19245/LVI-SAM-Easyused)
